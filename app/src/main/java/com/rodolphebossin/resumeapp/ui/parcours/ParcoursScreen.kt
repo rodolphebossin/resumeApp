@@ -31,8 +31,8 @@ import com.rodolphebossin.resumeapp.data.WorkExperience
  */
 
 /**
- * Handles the recyclerView of all greetings
- * @param list of greetings
+ * Handles the recyclerView of all ExperienceCards
+ * @param list of WorkExperiences
  */
 @Composable
 fun WorkExperiences(experiences: List<WorkExperience>) {
