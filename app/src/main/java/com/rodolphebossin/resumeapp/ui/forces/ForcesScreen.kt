@@ -19,7 +19,7 @@ import com.rodolphebossin.resumeapp.data.DataForces
  */
 
 @Composable
-fun ForcesPage(paragraphs: List<String>) {
+fun ForcesScreen(paragraphs: List<String>) {
     Column(
         modifier = Modifier.padding(12.dp),
         horizontalAlignment = Alignment.CenterHorizontally
@@ -52,5 +52,5 @@ fun ForceParagraph(paragraph: String) {
 @Preview(showBackground = true, name = "Forces")
 @Composable
 fun ForcesScreenPreview() {
-    ForcesPage(DataForces.forces)
+    ForcesScreen(DataForces.forces)
 }

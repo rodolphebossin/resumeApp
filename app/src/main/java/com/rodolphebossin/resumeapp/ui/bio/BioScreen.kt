@@ -20,7 +20,7 @@ import com.rodolphebossin.resumeapp.data.DataBio
  */
 
 @Composable
-fun BioPage(paragraphs: List<String>) {
+fun BioScreen(paragraphs: List<String>) {
     Column(modifier = Modifier.padding(12.dp)) {
         paragraphs.forEach { item ->
             BioParagraph(item)
@@ -64,5 +64,5 @@ fun BioParagraphPreview() {
 @Preview(showBackground = true)
 @Composable
 fun BioScreenPreview() {
-    BioPage(DataBio.bio)
+    BioScreen(DataBio.bio)
 }

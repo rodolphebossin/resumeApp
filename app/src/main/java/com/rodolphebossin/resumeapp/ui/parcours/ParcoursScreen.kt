@@ -25,6 +25,7 @@ import androidx.compose.ui.unit.dp
 import com.rodolphebossin.resumeapp.R
 import com.rodolphebossin.resumeapp.data.DataExperiences
 import com.rodolphebossin.resumeapp.data.WorkExperience
+import com.rodolphebossin.resumeapp.ui.components.MissionRow
 
 /**
  * Created by Rodolphe Bossin on 31/01/2022.
@@ -35,9 +36,9 @@ import com.rodolphebossin.resumeapp.data.WorkExperience
  * @param list of WorkExperiences
  */
 @Composable
-fun WorkExperiences(experiences: List<WorkExperience>) {
+fun WorkExperiencesScreen(experiences: List<WorkExperience>) {
     LazyColumn(
-        modifier = Modifier.padding(vertical = 8.dp)
+        modifier = Modifier.padding(vertical = 8.dp),
     ) { // LazyColumn takes a list(items) as parameter
         items(items = experiences) { experience -> // for each of the items
             ExperienceCard(experience = experience)
@@ -48,7 +49,8 @@ fun WorkExperiences(experiences: List<WorkExperience>) {
 @Composable
 private fun ExperienceCard(experience: WorkExperience) {
     Card(
-        modifier = Modifier.padding(vertical = 4.dp, horizontal = 8.dp)
+        modifier = Modifier.padding(vertical = 4.dp, horizontal = 8.dp),
+        elevation = 4.dp
     ) {
         ExperienceCardContent(experience)
     }
@@ -57,91 +59,78 @@ private fun ExperienceCard(experience: WorkExperience) {
 @Composable
 fun ExperienceCardContent(experience: WorkExperience) {
     var expanded by remember { mutableStateOf(false) } // Remembers if column is expanded por not
-
-    Row(
-        modifier = Modifier
-            .padding(12.dp)
-            .animateContentSize( // animates the deployment of the content and adjusts to it
-                animationSpec = spring( // specifies type of animation with parameters
-                    dampingRatio = Spring.DampingRatioMediumBouncy,
-                    stiffness = Spring.StiffnessLow
-                )
+    Column(
+        modifier = Modifier.animateContentSize( // animates the deployment of the content and adjusts to it
+            animationSpec = spring( // specifies type of animation with parameters
+                dampingRatio = Spring.DampingRatioMediumBouncy,
+                stiffness = Spring.StiffnessLow
             )
+        )
     ) {
-        Column(
+        Row(
             modifier = Modifier
-                .weight(1f) // giving weight to the first element
-                // makes it fill the portion of the space available defined by the value,
-                // pushing trailing elements in the remaining available space,
-                // so here the column will fill ALL available space,
-                // pushing the button at the end
                 .padding(12.dp)
         ) {
-            Text(text = experience.dates, style = MaterialTheme.typography.subtitle2)
-            Text(
-                text = experience.title,
-                style = MaterialTheme.typography.h6.copy(
-                    fontWeight = FontWeight.ExtraBold
-                )
-            )
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
+            Column(
+                modifier = Modifier
+                    .weight(1f) // giving weight to the first element
+                    // makes it fill the portion of the space available defined by the value,
+                    // pushing trailing elements in the remaining available space,
+                    // so here the column will fill ALL available space,
+                    // pushing the button at the end
+                    .padding(12.dp)
             ) {
-                Image(
-                    painter = if (isSystemInDarkTheme()) {
-                        painterResource(experience.icons[1])
-                    } else {
-                        painterResource(experience.icons[0])
-                    },
-                    contentDescription = "company logo",
-                    modifier = Modifier
-                        .size(
-                            width = 60.dp, height = 40.dp
-                        )
-                        .padding(start = 1.dp),
-                    contentScale = ContentScale.FillWidth
+                Text(text = experience.dates, style = MaterialTheme.typography.subtitle2)
+                Text(
+                    text = experience.title,
+                    style = MaterialTheme.typography.h6.copy(
+                        fontWeight = FontWeight.ExtraBold
+                    )
                 )
-                Spacer(modifier = Modifier.width(20.dp))
-                Text(text = experience.address)
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                ) {
+                    Surface(
+                        modifier = Modifier.size(60.dp).padding(start = 1.dp),
+                    ) {
+                        Image(
+                            painter = if (isSystemInDarkTheme()) {
+                                painterResource(experience.icons[1])
+                            } else {
+                                painterResource(experience.icons[0])
+                            },
+                            contentDescription = "company logo",
+                        )
+                    }
+
+                    Spacer(modifier = Modifier.width(20.dp))
+                    Text(text = experience.address)
+                }
             }
-            if (expanded) { // only shows this text if expanded
-                if (experience.missions != null) { // only shows if there are missions described
-                    Column(
-                        modifier = Modifier.padding(top = 8.dp) // .verticalScroll(rememberScrollState())
-                    ) { // LazyColumn takes a list(items) as parameter
-                        experience.missions.forEach { mission -> // for each of the items
-                            MissionRow(mission = mission)
-                        }
+            if (experience.missions != null) {
+                IconButton(onClick = { expanded = !expanded }) {
+                    Icon( // conditional icon that toggles look and content depending on expanded
+                        imageVector = if (expanded) Icons.Filled.ExpandLess else Icons.Filled.ExpandMore,
+                        contentDescription = if (expanded) stringResource(R.string.show_less) else stringResource(
+                            R.string.show_more
+                        )
+                    )
+                }
+            }
+        }
+        if (expanded) { // only shows this text if expanded
+            if (experience.missions != null) { // only shows if there are missions described
+                Column(
+                    modifier = Modifier.padding(start = 24.dp, end = 24.dp, bottom = 24.dp) // .verticalScroll(rememberScrollState())
+                ) { // LazyColumn takes a list(items) as parameter
+                    experience.missions.forEach { mission -> // for each of the items
+                        MissionRow(mission = mission)
                     }
                 }
             }
         }
-        if (experience.missions != null) {
-            IconButton(onClick = { expanded = !expanded }) {
-                Icon( // conditional icon that toggles look and content depending on expanded
-                    imageVector = if (expanded) Icons.Filled.ExpandLess else Icons.Filled.ExpandMore,
-                    contentDescription = if (expanded) stringResource(R.string.show_less) else stringResource(
-                        R.string.show_more
-                    )
-                )
-            }
-        }
-
     }
-}
 
-@Composable
-fun MissionRow(mission: String) {
-    Row(modifier = Modifier.padding(bottom = 8.dp)) {
-        Icon(
-            imageVector = Icons.Filled.ArrowRight,
-            contentDescription = "arrow right"
-        )
-        Text(
-            text = mission,
-            style = MaterialTheme.typography.body1
-        )
-    }
 }
 
 @Preview(showBackground = true, name = "Expérience")
