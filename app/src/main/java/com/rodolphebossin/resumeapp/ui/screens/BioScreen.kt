@@ -1,4 +1,4 @@
-package com.rodolphebossin.resumeapp.ui.bio
+package com.rodolphebossin.resumeapp.ui.screens
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row

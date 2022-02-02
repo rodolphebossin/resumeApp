@@ -1,4 +1,4 @@
-package com.rodolphebossin.resumeapp.ui.formation
+package com.rodolphebossin.resumeapp.ui.screens
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth

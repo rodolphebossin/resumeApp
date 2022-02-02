@@ -1,4 +1,4 @@
-package com.rodolphebossin.resumeapp.ui.competences
+package com.rodolphebossin.resumeapp.ui.screens
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.ButtonDefaults

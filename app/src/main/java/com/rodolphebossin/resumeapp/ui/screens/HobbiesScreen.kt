@@ -1,4 +1,4 @@
-package com.rodolphebossin.resumeapp.ui.hobbies
+package com.rodolphebossin.resumeapp.ui.screens
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
