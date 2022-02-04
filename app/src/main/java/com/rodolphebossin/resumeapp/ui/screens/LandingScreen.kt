@@ -13,7 +13,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.rodolphebossin.resumeapp.R
@@ -36,7 +35,7 @@ fun LandingScreen(
     Column(
         modifier = Modifier
             .padding(16.dp)
-            .padding(top = 32.dp)
+            // .padding(top = 32.dp)
             .fillMaxWidth()
             .verticalScroll(rememberScrollState())
             .semantics { contentDescription = "Landing Screen" },
@@ -92,20 +91,21 @@ fun LandingScreenButton(
             .padding(horizontal = 16.dp, vertical = 8.dp),
         elevation = ButtonDefaults.elevation()
     ) {
-        Row(
-            modifier = Modifier.padding(vertical = 4.dp),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
+        Box(
+            modifier = Modifier
+                .padding(vertical = 4.dp)
+                .fillMaxWidth(),
+            ) {
             Text(
                 text = text.uppercase(Locale.getDefault()),
-                modifier = Modifier.weight(1f),
-                textAlign = TextAlign.Center,
+                modifier = Modifier.align(Alignment.Center),
                 style = MaterialTheme.typography.h6
             )
             Text(
                 text = "•••",
                 modifier = Modifier
                     .padding(end = 8.dp)
+                    .align(Alignment.CenterEnd)
             )
         }
 

@@ -10,18 +10,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.rodolphebossin.resumeapp.data.*
 import com.rodolphebossin.resumeapp.ui.Screens
-import com.rodolphebossin.resumeapp.ui.screens.BioScreen
-import com.rodolphebossin.resumeapp.ui.screens.CompetencesScreen
-import com.rodolphebossin.resumeapp.ui.components.ResumeTabRow
-import com.rodolphebossin.resumeapp.ui.screens.ForcesScreen
-import com.rodolphebossin.resumeapp.ui.screens.FormationScreen
-import com.rodolphebossin.resumeapp.ui.screens.HobbiesScreen
-import com.rodolphebossin.resumeapp.ui.screens.LandingScreen
-import com.rodolphebossin.resumeapp.ui.screens.WorkExperiencesScreen
-import com.rodolphebossin.resumeapp.ui.screens.TechnosScreen
+import com.rodolphebossin.resumeapp.ui.components.ScrollableTabRow
+import com.rodolphebossin.resumeapp.ui.screens.*
 import com.rodolphebossin.resumeapp.ui.theme.ResumeAppTheme
 
 class MainActivity : ComponentActivity() {
@@ -41,16 +35,33 @@ class MainActivity : ComponentActivity() {
 fun ResumeApp() {
     ResumeAppTheme {
         // TODO : find a way to get the list automatically
-        val allScreens = listOf(Screens.Landing, Screens.Bio, Screens.Forces, Screens.Parcours, Screens.Competences, Screens.Technos, Screens.Formation, Screens.Loisirs)
+        val allScreens = listOf(
+            Screens.Landing,
+            Screens.Bio,
+            Screens.Forces,
+            Screens.Parcours,
+            Screens.Competences,
+            Screens.Technos,
+            Screens.Formation,
+            Screens.Loisirs
+        )
         val navController = rememberNavController()
-        val currentScreen = Screens.fromRoute(navController.currentBackStackEntry?.destination?.route) // update current screen
+        val backstackEntry =
+            navController.currentBackStackEntryAsState() // provide with the current backStack entry as a State
+        val currentScreen = Screens.fromRoute( // Update current screen
+            backstackEntry.value?.destination?.route // query the current back stack entry for its route
+        )
+        // var currentScreen = Screens.fromRoute(navController.currentBackStackEntry?.destination?.route) // update current screen
         Scaffold(
-            topBar = { // TopBar with icons allowing navigation + links to LinkedIn and mail
-                ResumeTabRow(
-                    allScreens = allScreens,
-                    onTabSelected = { screen -> navController.navigate(screen.route) }, // Navigates to selected screen
-                    currentScreen = currentScreen
-                )
+            topBar = {
+                if (currentScreen != Screens.Landing) {
+                    ScrollableTabRow( // TopBar with icons allowing navigation
+                        allScreens = allScreens,
+                        onChipSelected = { screen -> navController.navigate(screen.route) }, // Navigates to selected screen
+                        currentScreen = currentScreen
+                    )
+                }
+                // else + links to LinkedIn and mail
             }
         ) { innerPadding ->
             NavHost( // NavHost will receive all screens/destinations
@@ -94,6 +105,7 @@ fun ResumeApp() {
         }
     }
 }
+
 
 
 
