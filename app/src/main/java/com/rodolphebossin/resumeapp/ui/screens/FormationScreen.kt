@@ -15,6 +15,7 @@ import com.rodolphebossin.resumeapp.data.Formation
 
 /**
  * Created by Rodolphe Bossin on 01/02/2022.
+ * Screen displaying my education
  */
 
 @Composable

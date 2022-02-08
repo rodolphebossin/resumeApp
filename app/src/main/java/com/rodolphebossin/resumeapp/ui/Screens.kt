@@ -9,7 +9,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
  */
 sealed class Screens(val route: String, val icon: ImageVector) {
 
-    object Landing : Screens("landing", icon = Icons.Filled.Home)
+    object Home : Screens("home", icon = Icons.Filled.Home)
     object Bio : Screens("bio", icon = Icons.Filled.AccountCircle)
     object Forces : Screens("forces", icon = Icons.Filled.PieChart)
     object Parcours : Screens("parcours", icon = Icons.Filled.List)
@@ -21,7 +21,7 @@ sealed class Screens(val route: String, val icon: ImageVector) {
     companion object {
         fun fromRoute(route: String?): Screens =
             when (route) {
-                "landing" -> Landing
+                "home" -> Home
                 "bio" -> Bio
                 "forces" -> Forces
                 "parcours" -> Parcours
@@ -29,7 +29,7 @@ sealed class Screens(val route: String, val icon: ImageVector) {
                 "technos" -> Technos
                 "formation" -> Formation
                 "loisirs" -> Loisirs
-                null -> Landing
+                null -> Home
                 else -> throw IllegalArgumentException("Route $route is not recognized.")
             }
     }

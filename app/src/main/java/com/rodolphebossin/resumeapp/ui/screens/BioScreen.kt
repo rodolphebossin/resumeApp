@@ -17,6 +17,7 @@ import com.rodolphebossin.resumeapp.data.DataBio
 
 /**
  * Created by Rodolphe Bossin on 31/01/2022.
+ * Screen that displays my bio
  */
 
 @Composable

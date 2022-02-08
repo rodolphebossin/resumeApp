@@ -25,11 +25,24 @@
         <entry key="../../../../../../layout/compose-model-1643799441524.xml" value="0.1" />
         <entry key="../../../../../../layout/compose-model-1643799460111.xml" value="0.1" />
         <entry key="../../../../../../layout/compose-model-1643809791151.xml" value="0.5" />
+        <entry key="../../../../../../layout/compose-model-1644062974147.xml" value="0.1" />
+        <entry key="../../../../../../layout/compose-model-1644219172160.xml" value="0.1685185185185185" />
+        <entry key="../../../../../../layout/compose-model-1644224291373.xml" value="0.1" />
+        <entry key="../../../../../../layout/compose-model-1644225299709.xml" value="0.1" />
+        <entry key="../../../../../../layout/compose-model-1644225815014.xml" value="0.10740740740740741" />
+        <entry key="../../../../../../layout/compose-model-1644251024593.xml" value="0.1" />
+        <entry key="../../../../../../layout/compose-model-1644327877769.xml" value="0.5" />
         <entry key="app/src/main/res/drawable/exotic_logo.xml" value="0.1962962962962963" />
         <entry key="app/src/main/res/drawable/fishing.xml" value="0.18888888888888888" />
         <entry key="app/src/main/res/drawable/ic_baseline_interests_24.xml" value="0.2074074074074074" />
+        <entry key="app/src/main/res/drawable/linkedin.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/logozebra_black.xml" value="0.16944444444444445" />
-        <entry key="app/src/main/res/drawable/swimming_figure_svgrepo_com.xml" value="0.1" />
+        <entry key="app/src/main/res/drawable/musique.xml" value="0.1" />
+        <entry key="app/src/main/res/drawable/running.xml" value="0.1" />
+        <entry key="app/src/main/res/drawable/surf.xml" value="0.1" />
+        <entry key="app/src/main/res/drawable/swimming.xml" value="0.1" />
+        <entry key="app/src/main/res/drawable/swimming_figure_svgrepo_com.xml" value="0.24814814814814815" />
+        <entry key="app/src/main/res/drawable/yoga.xml" value="0.1" />
       </map>
     </option>
   </component>

@@ -1,6 +1,7 @@
 package com.rodolphebossin.resumeapp.ui.screens
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
@@ -9,6 +10,8 @@ import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
@@ -16,6 +19,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.rodolphebossin.resumeapp.R
+import com.rodolphebossin.resumeapp.ui.components.AnimatedCircleOutline
 import java.util.*
 
 /**
@@ -30,7 +34,7 @@ fun LandingScreen(
     onClickSeeCompetences: () -> Unit = {},
     onClickSeeTechnos: () -> Unit = {},
     onClickSeeFormation: () -> Unit = {},
-    onClickSeeLoisirs: () -> Unit = {}
+    onClickSeeLoisirs: () -> Unit = {},
 ) {
     Column(
         modifier = Modifier
@@ -41,18 +45,30 @@ fun LandingScreen(
             .semantics { contentDescription = "Landing Screen" },
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        // Profile pic
-        Surface(
-            modifier = Modifier.size(200.dp),
-            shape = CircleShape,
-            color = MaterialTheme.colors.onSurface.copy(alpha = 0.2f)
-        ) {
-            Image(
-                painter = painterResource(id = R.drawable.perso),
-                contentDescription = "profile pic"
+        // Box containing profile pic and animated border
+        Box(Modifier.padding(16.dp)) {
+            // animated border
+            AnimatedCircleOutline(
+                color = Color.Red,
+                Modifier
+                    .height(205.dp)
+                    .align(Alignment.Center)
+                    .fillMaxWidth()
             )
+            // Profile pic
+            Surface(
+                modifier = Modifier
+                    .size(200.dp)
+                    .align(Alignment.Center),
+                shape = CircleShape,
+                color = MaterialTheme.colors.onSurface.copy(alpha = 0.2f)
+            ) {
+                Image(
+                    painter = painterResource(id = R.drawable.perso),
+                    contentDescription = "profile pic"
+                )
+            }
         }
-
         // Name
         Text(
             text = "Rodolphe Bossin",
@@ -66,17 +82,66 @@ fun LandingScreen(
             modifier = Modifier.padding(bottom = 16.dp)
         )
         // Buttons
-        LandingScreenButton(onClickSeeBio, "Bio")
-        LandingScreenButton(onClickSeeForces, "Forces")
-        LandingScreenButton(onClickSeeParcours, "Parcours")
-        LandingScreenButton(onClickSeeCompetences, "Compétences")
-        LandingScreenButton(onClickSeeTechnos, "Technos")
-        LandingScreenButton(onClickSeeFormation, "Formation")
-        LandingScreenButton(onClickSeeLoisirs, "Loisirs")
+        LandingScreenGradientBtn(onClickSeeBio, "Bio")
+        LandingScreenGradientBtn(onClickSeeForces, "Forces")
+        LandingScreenGradientBtn(onClickSeeParcours, "Parcours")
+        LandingScreenGradientBtn(onClickSeeCompetences, "Compétences")
+        LandingScreenGradientBtn(onClickSeeTechnos, "Technos")
+        LandingScreenGradientBtn(onClickSeeFormation, "Formation")
+        LandingScreenGradientBtn(onClickSeeLoisirs, "Loisirs")
     }
 }
 
+/**
+ * Builds a full width button
+ */
 @Composable
+fun LandingScreenGradientBtn(
+    onClick: () -> Unit,
+    text: String,
+) {
+    val gradient = Brush.horizontalGradient(
+        colors = listOf(
+            MaterialTheme.colors.primary,
+            MaterialTheme.colors.primaryVariant
+        )
+    )
+    Button( // Use Button to build our custom btn
+        colors = ButtonDefaults.buttonColors(
+            backgroundColor = Color.Transparent // suppress default background color
+        ),
+        contentPadding = PaddingValues(),
+        onClick = onClick,
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp, vertical = 8.dp),
+        elevation = ButtonDefaults.elevation()
+    ) {
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(gradient)
+                .padding(vertical = 12.dp),
+        ) {
+            Text(
+                color = MaterialTheme.colors.onPrimary,
+                text = text.uppercase(Locale.getDefault()),
+                modifier = Modifier.align(Alignment.Center),
+                style = MaterialTheme.typography.h6
+            )
+            Text(
+                text = "•••",
+                color = MaterialTheme.colors.onPrimary,
+                modifier = Modifier
+                    .padding(end = 8.dp)
+                    .align(Alignment.CenterEnd),
+                style = MaterialTheme.typography.h6
+            )
+        }
+    }
+}
+
+/*@Composable
 fun LandingScreenButton(
     onClick: () -> Unit = {},
     text: String
@@ -110,10 +175,17 @@ fun LandingScreenButton(
         }
 
     }
+}*/
+
+@Preview(showBackground = true)
+@Composable
+fun LandingScreenGradientBtnPreview() {
+    LandingScreenGradientBtn(onClick = {}, text = "test")
 }
 
+/*
 @Preview(showBackground = true)
 @Composable
 fun LandingScreenButtonPreview() {
     LandingScreenButton(onClick = {}, text = "test")
-}
+}*/

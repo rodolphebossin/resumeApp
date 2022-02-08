@@ -16,6 +16,7 @@ import com.rodolphebossin.resumeapp.data.DataForces
 
 /**
  * Created by Rodolphe Bossin on 31/01/2022.
+ * Displays my professional strengths
  */
 
 @Composable
@@ -33,6 +34,10 @@ fun ForcesScreen(paragraphs: List<String>) {
     }
 }
 
+/**
+ * Builds a paragraph for each strength
+ * @param paragraph a string describing the strength
+ */
 @Composable
 fun ForceParagraph(paragraph: String) {
     Column(

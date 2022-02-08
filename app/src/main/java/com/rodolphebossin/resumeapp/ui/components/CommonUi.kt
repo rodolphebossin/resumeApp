@@ -1,36 +1,48 @@
 package com.rodolphebossin.resumeapp.ui.components
 
+import android.content.ActivityNotFoundException
+import android.content.Context
+import android.content.Intent
+import android.widget.Toast
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.tween
+import androidx.compose.foundation.background
 import androidx.compose.foundation.horizontalScroll
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.selection.selectableGroup
-import androidx.compose.material.Icon
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Surface
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowRight
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.material.icons.filled.Mail
+import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.compose.ui.viewinterop.AndroidView
+import androidx.core.content.ContextCompat
+import com.google.android.exoplayer2.ExoPlayer
+import com.google.android.exoplayer2.MediaItem
+import com.google.android.exoplayer2.Player
+import com.google.android.exoplayer2.ui.AspectRatioFrameLayout
+import com.google.android.exoplayer2.ui.PlayerView
+import com.rodolphebossin.resumeapp.R
 import com.rodolphebossin.resumeapp.ResumeViewModel
 import com.rodolphebossin.resumeapp.ui.Screens
 import kotlinx.coroutines.launch
 import java.util.*
+
 
 /**
  * Created by Rodolphe Bossin on 01/02/2022.
@@ -59,19 +71,21 @@ fun MissionRow(mission: String) {
  * @param allScreens the list of all Screens
  * @param onChipSelected the callback that gets called when one of the chips is selected
  * @param currentScreen remeber the current Screen selected
+ * current scrollState is saved to viewModel and restored on configuration changes
  */
 @Composable
 fun ScrollableTabRow(
+    viewModel: ResumeViewModel,
     allScreens: List<Screens>,
     onChipSelected: (Screens) -> Unit,
     currentScreen: Screens
 ) {
     val scrollState = rememberScrollState()
     val scope = rememberCoroutineScope()
-    val viewModel: ResumeViewModel = viewModel()
     Surface(
         modifier = Modifier
             .fillMaxWidth(),
+        color = MaterialTheme.colors.primarySurface
     ) {
         Row(
             modifier = Modifier
@@ -87,8 +101,8 @@ fun ScrollableTabRow(
                     onSelected = {
                         onChipSelected(screen) // callBack that will get called on click
                         viewModel.onChangeScreenChipScrollableTabRowScrollPosition(scrollState.value) // update the scrollValue in the viewModel
-                                 },
-                    isSelected = currentScreen == screen
+                    },
+                    isSelected = currentScreen == screen,
                 )
             }
         }
@@ -110,8 +124,8 @@ fun ScrollableTabRowChip(
     onSelected: () -> Unit,
 ) {
 
-    val chipColor = MaterialTheme.colors.primary
-    val textColor = MaterialTheme.colors.onPrimary
+    val chipColor = MaterialTheme.colors.onPrimary
+    val textColor = MaterialTheme.colors.primary
     val durationMillis = if (isSelected) TabFadeInAnimationDuration else TabFadeOutAnimationDuration
     val animSpec = remember {
         tween<Color>(
@@ -152,6 +166,96 @@ fun ScrollableTabRowChip(
         }
     }
 }
+
+/**
+ * Builds the appBar
+ * @param onMailClick callBack to automatically send email to my personal address
+ * @param onLinkedInClick callBack to redirect to my personal LinkedIn profile
+ */
+@Composable
+fun ResumeTopAppBar(
+    onMailClick: () -> Unit,
+    onLinkedInClick: () -> Unit
+) {
+    TopAppBar(
+        modifier = Modifier.height(48.dp),
+        title = {
+            Text(text = "Personal Resume")
+        },
+        actions = {
+            IconButton(onClick = onLinkedInClick) {
+                Icon(painterResource(id = R.drawable.linkedin), contentDescription = null)
+                Modifier.width(20.dp)
+            }
+            IconButton(onClick = onMailClick) {
+                Icon(imageVector = Icons.Filled.Mail, contentDescription = null)
+            }
+
+        }
+    )
+}
+
+/**
+ * Builds on embedded videoPlayer
+ * @param url a string that provides url for the video to be played
+ * player is automatically destroyed when UI is destroyed
+ */
+@Composable
+fun VideoPlayer(url: String) {
+    val context = LocalContext.current
+    val player = remember {
+        ExoPlayer.Builder(context).build()
+    }
+    val playerView = PlayerView(context)
+    val mediaItem = MediaItem.fromUri(url)
+    val playWhenReady by rememberSaveable {
+        mutableStateOf(true)
+    }
+
+    player.setMediaItem(mediaItem)
+    playerView.player = player
+    playerView.resizeMode = AspectRatioFrameLayout.RESIZE_MODE_ZOOM
+    // playerView.setKeepContentOnPlayerReset(true);
+    LaunchedEffect(player) {
+        player.prepare()
+        player.playWhenReady = playWhenReady
+        player.repeatMode = Player.REPEAT_MODE_ALL;
+    }
+
+    // Disposable view that hosts the player
+    DisposableEffect(
+        AndroidView(
+            modifier = Modifier
+                .then(if (player.isPlaying) Modifier.height(250.dp) else Modifier), // adjust player size when video starts playing
+            factory = {
+                playerView
+            })
+    ) {
+        onDispose {
+            player.release() // Release player when view is destroyed
+        }
+    }
+}
+
+
+/**
+ * Launch implicit intent from context
+ * @param intent the implicit Intent
+ * @param context the context
+ * shows toast if no app can handle the intent
+ */
+fun sendIntent(intent: Intent, context: Context) {
+    try {
+        ContextCompat.startActivity(context, intent, null)
+    } catch (e: ActivityNotFoundException) {
+        Toast.makeText(
+            context,
+            "Désolé mais vous ne possédez aucune application capable d'effectuer cette action...",
+            Toast.LENGTH_SHORT
+        ).show()
+    }
+}
+
 
 private const val InactiveTabOpacity = 0.60f
 

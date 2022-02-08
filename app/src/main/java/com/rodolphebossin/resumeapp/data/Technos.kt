@@ -39,6 +39,10 @@ object DataTechnos {
         Techno(
             "Hibernate",
             R.drawable.hibernate
+        ),
+        Techno(
+            "Angular",
+            R.drawable.angular_icon_1
         )
     )
     val technosFront: List<Techno> = listOf(
