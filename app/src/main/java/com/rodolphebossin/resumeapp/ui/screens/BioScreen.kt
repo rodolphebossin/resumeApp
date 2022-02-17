@@ -1,9 +1,8 @@
 package com.rodolphebossin.resumeapp.ui.screens
 
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Divider
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
@@ -22,7 +21,10 @@ import com.rodolphebossin.resumeapp.data.DataBio
 
 @Composable
 fun BioScreen(paragraphs: List<String>) {
-    Column(modifier = Modifier.padding(12.dp)) {
+    val scrollState = rememberScrollState()
+    Column(modifier = Modifier
+        .padding(12.dp)
+        .verticalScroll(scrollState)) {
         paragraphs.forEach { item ->
             BioParagraph(item)
         }
@@ -32,7 +34,8 @@ fun BioScreen(paragraphs: List<String>) {
 @Composable
 fun BioParagraph(paragraph: String) {
     Column(
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = Modifier.fillMaxWidth()
     ) {
         Row(modifier = Modifier.padding(12.dp)) {
             Text(

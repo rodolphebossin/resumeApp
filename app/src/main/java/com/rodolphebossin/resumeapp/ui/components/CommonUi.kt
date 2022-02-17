@@ -70,7 +70,7 @@ fun MissionRow(mission: String) {
  * Builds a scrollable row of the chips for all screens
  * @param allScreens the list of all Screens
  * @param onChipSelected the callback that gets called when one of the chips is selected
- * @param currentScreen remeber the current Screen selected
+ * @param currentScreen remember the current Screen selected
  * current scrollState is saved to viewModel and restored on configuration changes
  */
 @Composable
@@ -112,7 +112,7 @@ fun ScrollableTabRow(
 /**
  * Builds an chip for a Screen to be displayed in the TabRow
  * @param screen: a Screen
- * @param isSelected a Boolean discribing is the chip is selected or not
+ * @param isSelected a Boolean describing is the chip is selected or not
  * @param onSelected the callBack to be called when this chip is selected
  * The chip and text change color when selected
  * color change is animated
@@ -124,8 +124,8 @@ fun ScrollableTabRowChip(
     onSelected: () -> Unit,
 ) {
 
-    val chipColor = MaterialTheme.colors.onPrimary
-    val textColor = MaterialTheme.colors.primary
+    val chipColor = MaterialTheme.colors.primary
+    val textColor = MaterialTheme.colors.onPrimary
     val durationMillis = if (isSelected) TabFadeInAnimationDuration else TabFadeOutAnimationDuration
     val animSpec = remember {
         tween<Color>(

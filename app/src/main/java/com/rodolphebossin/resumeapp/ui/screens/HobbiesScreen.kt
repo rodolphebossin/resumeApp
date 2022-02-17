@@ -53,7 +53,7 @@ private fun HobbyCard(hobby: Hobby, viewModel: ResumeViewModel) {
         modifier = Modifier.padding(vertical = 4.dp, horizontal = 8.dp),
         elevation = 4.dp
     ) {
-        HobbieCardContent(hobby, viewModel)
+        HobbyCardContent(hobby, viewModel)
     }
 }
 
@@ -62,7 +62,7 @@ private fun HobbyCard(hobby: Hobby, viewModel: ResumeViewModel) {
  * Shows a video describing the hobby when the card is expanded
  */
 @Composable
-fun HobbieCardContent(hobby: Hobby, viewModel: ResumeViewModel) {
+fun HobbyCardContent(hobby: Hobby, viewModel: ResumeViewModel) {
     var expanded by rememberSaveable { mutableStateOf(false) } // Remembers if column is expanded or not
 
     // The icon size is animated and changes when the card is expanded

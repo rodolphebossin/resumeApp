@@ -8,6 +8,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -20,7 +21,7 @@ import com.rodolphebossin.resumeapp.data.DataForces
  */
 
 @Composable
-fun ForcesScreen(paragraphs: List<String>) {
+fun ForcesScreen(paragraphs: List<AnnotatedString>) {
     Column(
         modifier = Modifier.padding(12.dp),
         horizontalAlignment = Alignment.CenterHorizontally
@@ -39,7 +40,7 @@ fun ForcesScreen(paragraphs: List<String>) {
  * @param paragraph a string describing the strength
  */
 @Composable
-fun ForceParagraph(paragraph: String) {
+fun ForceParagraph(paragraph: AnnotatedString) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {

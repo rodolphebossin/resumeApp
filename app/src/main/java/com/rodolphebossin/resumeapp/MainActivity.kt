@@ -3,10 +3,10 @@ package com.rodolphebossin.resumeapp
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Scaffold
@@ -29,7 +29,7 @@ class MainActivity : ComponentActivity() {
 
     private val viewModel by viewModels<ResumeViewModel>()
 
-    @ExperimentalFoundationApi
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -40,7 +40,7 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-@ExperimentalFoundationApi
+
 @Composable
 fun ResumeApp(viewModel: ResumeViewModel) {
     ResumeAppTheme {
@@ -64,12 +64,12 @@ fun ResumeApp(viewModel: ResumeViewModel) {
         val context = LocalContext.current
         Scaffold(
             topBar = {
-                Column() {
+                Column() { // App name + links to LinkedIn and mail
                     ResumeTopAppBar(
                         onMailClick = { sendIntent(emailIntent, context) },
                         onLinkedInClick = { sendIntent(linkedInIntent, context) }
                     )
-                    // App name with robo icon + links to LinkedIn and mail
+
                     if (currentScreen != Screens.Home) {
                         ScrollableTabRow( // TopBar with icons allowing navigation
                             viewModel = viewModel,
@@ -79,7 +79,6 @@ fun ResumeApp(viewModel: ResumeViewModel) {
                         )
                     }
                 }
-
             }
         ) { innerPadding ->
             NavHost( // NavHost will receive all screens/destinations
@@ -139,7 +138,8 @@ val emailIntent = Intent(Intent.ACTION_SEND).apply {
     putExtra(Intent.EXTRA_TEXT, "Bonjour Rodolphe,")
 }
 
-val linkedInIntent: Intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://www.linkedin.com/in/rodolphe-bossin/"))
+val linkedInIntent: Intent =
+    Intent(Intent.ACTION_VIEW, Uri.parse("https://www.linkedin.com/in/rodolphe-bossin/"))
 
 
 

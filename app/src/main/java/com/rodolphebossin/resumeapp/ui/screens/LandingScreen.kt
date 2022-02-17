@@ -49,9 +49,9 @@ fun LandingScreen(
         Box(Modifier.padding(16.dp)) {
             // animated border
             AnimatedCircleOutline(
-                color = Color.Red,
+                color = MaterialTheme.colors.secondary,
                 Modifier
-                    .height(205.dp)
+                    .height(210.dp)
                     .align(Alignment.Center)
                     .fillMaxWidth()
             )
@@ -124,14 +124,14 @@ fun LandingScreenGradientBtn(
                 .padding(vertical = 12.dp),
         ) {
             Text(
-                color = MaterialTheme.colors.onPrimary,
+
                 text = text.uppercase(Locale.getDefault()),
                 modifier = Modifier.align(Alignment.Center),
                 style = MaterialTheme.typography.h6
             )
             Text(
                 text = "•••",
-                color = MaterialTheme.colors.onPrimary,
+                color = MaterialTheme.colors.secondary,
                 modifier = Modifier
                     .padding(end = 8.dp)
                     .align(Alignment.CenterEnd),

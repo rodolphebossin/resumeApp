@@ -5,6 +5,7 @@ package com.rodolphebossin.resumeapp.ui.components
  */
 
 import androidx.compose.animation.core.Animatable
+import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Canvas
@@ -28,12 +29,12 @@ fun AnimatedCircleOutline(
     color: Color,
     modifier: Modifier = Modifier
 ) {
-    val stroke = with(LocalDensity.current) { Stroke(5.dp.toPx()) }
+    val stroke = with(LocalDensity.current) { Stroke(9.dp.toPx()) }
     val animateFloat = remember { Animatable(0f) }
     LaunchedEffect(animateFloat) {
         animateFloat.animateTo(
             targetValue = 1f,
-            animationSpec = tween(durationMillis = 3000, easing = LinearEasing)
+            animationSpec = tween(durationMillis = 1000, easing = FastOutSlowInEasing)
         )
     }
 
@@ -52,7 +53,7 @@ fun AnimatedCircleOutline(
             useCenter = false,
             topLeft = topLeft,
             size = size,
-            style = Stroke(2.0f)
+            style = Stroke(10.0f)
         )
     }
 }
