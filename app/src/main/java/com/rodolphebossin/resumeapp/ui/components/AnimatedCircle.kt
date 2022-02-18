@@ -22,7 +22,7 @@ import androidx.compose.ui.unit.dp
 
 
 /**
- * An circle that animates when loaded
+ * A circle that animates when loaded
  */
 @Composable
 fun AnimatedCircleOutline(

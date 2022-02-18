@@ -47,16 +47,7 @@ class MainActivity : ComponentActivity() {
 fun ResumeApp(viewModel: ResumeViewModel) {
     ResumeAppTheme {
         // TODO : find a way to get the list automatically
-        val allScreens = listOf(
-            Screens.Home,
-            Screens.Bio,
-            Screens.Forces,
-            Screens.Parcours,
-            Screens.Competences,
-            Screens.Technos,
-            Screens.Formation,
-            Screens.Loisirs
-        )
+        val allScreens = viewModel.allScreens
         val navController = rememberNavController()
         val backstackEntry =
             navController.currentBackStackEntryAsState() // provide with the current backStack entry as a State
@@ -89,14 +80,10 @@ fun ResumeApp(viewModel: ResumeViewModel) {
                 modifier = Modifier.padding(innerPadding)
             ) { // List all possible destinations
                 composable(route = Screens.Home.route) {  // Overview destination route (default)
-                    LandingScreen( // add navigation actions for buttons in LandingScreen
-                        onClickSeeBio = { navController.navigate(Screens.Bio.route) },
-                        onClickSeeForces = { navController.navigate(Screens.Forces.route) },
-                        onClickSeeParcours = { navController.navigate(Screens.Parcours.route) },
-                        onClickSeeCompetences = { navController.navigate(Screens.Competences.route) },
-                        onClickSeeTechnos = { navController.navigate(Screens.Technos.route) },
-                        onClickSeeFormation = { navController.navigate(Screens.Formation.route) },
-                        onClickSeeLoisirs = { navController.navigate(Screens.Loisirs.route) }
+                    LandingScreen(
+                        navController,
+                        allScreens,
+                        viewModel = viewModel
                     ) // screen content
                 }
                 composable(route = Screens.Bio.route) {
