@@ -3,15 +3,16 @@ package com.rodolphebossin.resumeapp
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -34,6 +35,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             ResumeAppTheme {
+                window?.statusBarColor = MaterialTheme.colors.primaryVariant.toArgb()
                 ResumeApp(viewModel)
             }
         }
@@ -74,7 +76,7 @@ fun ResumeApp(viewModel: ResumeViewModel) {
                         ScrollableTabRow( // TopBar with icons allowing navigation
                             viewModel = viewModel,
                             allScreens = allScreens,
-                            onChipSelected = { screen -> navController.navigate(screen.route) }, // Navigates to selected screen
+                            onTabSelected = { screen -> navController.navigate(screen.route) }, // Navigates to selected screen
                             currentScreen = currentScreen
                         )
                     }

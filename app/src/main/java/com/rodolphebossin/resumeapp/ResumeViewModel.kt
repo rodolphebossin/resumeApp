@@ -8,12 +8,12 @@ import androidx.lifecycle.ViewModelProvider
  */
 class ResumeViewModel : ViewModel() {
 
-    // Selected chip in scrollable tabRow
+/*    // Selected chip in scrollable tabRow
     var screenChipScrollableTabRowScrollPosition: Int = 0
 
     fun onChangeScreenChipScrollableTabRowScrollPosition(position: Int){
         screenChipScrollableTabRowScrollPosition = position
-    }
+    }*/
 
     // Is this card expanded
     var isExpanded: Boolean = false
@@ -27,6 +27,13 @@ class ResumeViewModel : ViewModel() {
 
     fun onSkillChange(position: Int){
         skill = position
+    }
+
+    // Screen selected
+    var selectedScreen: Int = 0
+
+    fun onScreenChange(selection: Int){
+        selectedScreen = selection
     }
 
 }

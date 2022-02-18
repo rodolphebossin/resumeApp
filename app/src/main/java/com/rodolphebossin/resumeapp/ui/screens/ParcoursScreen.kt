@@ -17,6 +17,7 @@ import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.DefaultAlpha
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -24,7 +25,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.rodolphebossin.resumeapp.R
 import com.rodolphebossin.resumeapp.ResumeViewModel
-import com.rodolphebossin.resumeapp.data.DataExperiences
+import com.rodolphebossin.resumeapp.data.DataExperiences.workExperiences
 import com.rodolphebossin.resumeapp.data.WorkExperience
 import com.rodolphebossin.resumeapp.ui.components.MissionRow
 
@@ -34,7 +35,7 @@ import com.rodolphebossin.resumeapp.ui.components.MissionRow
 
 /**
  * Handles the recyclerView of all ExperienceCards
- * @param list of WorkExperiences
+ * @param List of WorkExperiences
  */
 @Composable
 fun WorkExperiencesScreen(experiences: List<WorkExperience>, viewModel: ResumeViewModel) {
@@ -74,42 +75,48 @@ fun ExperienceCardContent(experience: WorkExperience, viewModel: ResumeViewModel
             modifier = Modifier
                 .padding(12.dp)
         ) {
-            Column(
-                modifier = Modifier
-                    .weight(1f) // giving weight to the first element
-                    // makes it fill the portion of the space available defined by the value,
-                    // pushing trailing elements in the remaining available space,
-                    // so here the column will fill ALL available space,
-                    // pushing the button at the end
-                    .padding(12.dp)
-            ) {
-                Text(text = experience.dates, style = MaterialTheme.typography.subtitle2)
-                Text(
-                    text = experience.title,
-                    style = MaterialTheme.typography.h6.copy(
-                        fontWeight = FontWeight.ExtraBold
-                    )
-                )
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
+            Row(verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier.weight(1f)) {
+                Surface(
+                    modifier = Modifier
+                        .size(60.dp).padding(end = 8.dp)
                 ) {
-                    Surface(
-                        modifier = Modifier.size(60.dp).padding(start = 1.dp),
-                    ) {
-                        Image(
-                            painter = if (isSystemInDarkTheme()) {
-                                painterResource(experience.icons[1])
-                            } else {
-                                painterResource(experience.icons[0])
-                            },
-                            contentDescription = "company logo",
+                    Image(
+                        painter = if (isSystemInDarkTheme()) {
+                            painterResource(experience.icons[1])
+                        } else {
+                            painterResource(experience.icons[0])
+                        },
+                        contentDescription = "company logo",
+                    )
+                }
+                Column(
+                    modifier = Modifier
+                        .padding(12.dp)
+                ) {
+                    Text(
+                        text = experience.dates,
+                        color = MaterialTheme.colors.onSurface.copy(alpha = ContentAlpha.medium),
+                        style = MaterialTheme.typography.subtitle2
+                    )
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Text(
+                            text = experience.title,
+                            color = MaterialTheme.colors.onSurface.copy(alpha = ContentAlpha.high),
+                            style = MaterialTheme.typography.h6.copy(
+                                fontWeight = FontWeight.ExtraBold
+                            ),
+                            modifier = Modifier.weight(0.5f)
                         )
-                    }
+                        //Spacer(modifier = Modifier.width(20.dp))
 
-                    Spacer(modifier = Modifier.width(20.dp))
-                    Text(text = experience.address)
+                    }
+                    Text(
+                        text = experience.address,
+                    )
                 }
             }
+
             if (experience.missions != null) {
                 IconButton(onClick = {
                     expanded = !expanded
@@ -122,12 +129,18 @@ fun ExperienceCardContent(experience: WorkExperience, viewModel: ResumeViewModel
                         )
                     )
                 }
+            } else {
+                Spacer(modifier = Modifier.width(48.dp))
             }
         }
         if (expanded) { // only shows this text if expanded
             if (experience.missions != null) { // only shows if there are missions described
                 Column(
-                    modifier = Modifier.padding(start = 24.dp, end = 24.dp, bottom = 24.dp) // .verticalScroll(rememberScrollState())
+                    modifier = Modifier.padding(
+                        start = 24.dp,
+                        end = 24.dp,
+                        bottom = 24.dp
+                    ) // .verticalScroll(rememberScrollState())
                 ) { // LazyColumn takes a list(items) as parameter
                     experience.missions.forEach { mission -> // for each of the items
                         MissionRow(mission = mission)
@@ -137,4 +150,10 @@ fun ExperienceCardContent(experience: WorkExperience, viewModel: ResumeViewModel
         }
     }
 
+}
+
+@Preview(showBackground = true)
+@Composable
+fun CardPreview() {
+    ExperienceCardContent(workExperiences[0], ResumeViewModel())
 }

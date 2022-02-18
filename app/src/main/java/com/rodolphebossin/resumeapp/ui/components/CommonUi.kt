@@ -7,12 +7,8 @@ import android.widget.Toast
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.tween
-import androidx.compose.foundation.background
-import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.selection.selectable
-import androidx.compose.foundation.selection.selectableGroup
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowRight
@@ -21,14 +17,12 @@ import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.semantics.contentDescription
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.content.ContextCompat
@@ -40,7 +34,6 @@ import com.google.android.exoplayer2.ui.PlayerView
 import com.rodolphebossin.resumeapp.R
 import com.rodolphebossin.resumeapp.ResumeViewModel
 import com.rodolphebossin.resumeapp.ui.Screens
-import kotlinx.coroutines.launch
 import java.util.*
 
 
@@ -67,100 +60,54 @@ fun MissionRow(mission: String) {
 }
 
 /**
- * Builds a scrollable row of the chips for all screens
+ * Builds a scrollable row of tabs for all screens
  * @param allScreens the list of all Screens
- * @param onChipSelected the callback that gets called when one of the chips is selected
+ * @param onTabSelected the callback that gets called when one of the tabs is selected
  * @param currentScreen remember the current Screen selected
- * current scrollState is saved to viewModel and restored on configuration changes
  */
 @Composable
 fun ScrollableTabRow(
     viewModel: ResumeViewModel,
     allScreens: List<Screens>,
-    onChipSelected: (Screens) -> Unit,
+    onTabSelected: (Screens) -> Unit,
     currentScreen: Screens
 ) {
-    val scrollState = rememberScrollState()
-    val scope = rememberCoroutineScope()
-    Surface(
-        modifier = Modifier
-            .fillMaxWidth(),
-        color = MaterialTheme.colors.primarySurface
-    ) {
-        Row(
-            modifier = Modifier
-                .selectableGroup()
-                .horizontalScroll(scrollState)
-                .fillMaxWidth()
-                .padding(start = 8.dp, top = 8.dp, bottom = 8.dp),
+    var selectedScreen by rememberSaveable { mutableStateOf(allScreens.indexOf(currentScreen)) }
+    Surface(elevation = 8.dp) {
+        ScrollableTabRow(
+            selectedTabIndex = selectedScreen,
+            divider = {}
         ) {
-            scope.launch { scrollState.scrollTo(viewModel.screenChipScrollableTabRowScrollPosition) }
-            allScreens.forEach { screen ->
-                ScrollableTabRowChip(
+            allScreens.forEachIndexed { index, screen ->
+                ScrollableTab(
                     screen = screen,
                     onSelected = {
-                        onChipSelected(screen) // callBack that will get called on click
-                        viewModel.onChangeScreenChipScrollableTabRowScrollPosition(scrollState.value) // update the scrollValue in the viewModel
+                        selectedScreen = index
+                        viewModel.onScreenChange(selectedScreen)
+                        onTabSelected(screen)
                     },
-                    isSelected = currentScreen == screen,
+                    isSelected = currentScreen == screen
                 )
             }
         }
     }
 }
 
-/**
- * Builds an chip for a Screen to be displayed in the TabRow
- * @param screen: a Screen
- * @param isSelected a Boolean describing is the chip is selected or not
- * @param onSelected the callBack to be called when this chip is selected
- * The chip and text change color when selected
- * color change is animated
- */
 @Composable
-fun ScrollableTabRowChip(
+private fun ScrollableTab(
     screen: Screens,
     isSelected: Boolean = false,
     onSelected: () -> Unit,
 ) {
-
-    val chipColor = MaterialTheme.colors.primary
-    val textColor = MaterialTheme.colors.onPrimary
-    val durationMillis = if (isSelected) TabFadeInAnimationDuration else TabFadeOutAnimationDuration
-    val animSpec = remember {
-        tween<Color>(
-            durationMillis = durationMillis,
-            easing = LinearEasing,
-            delayMillis = TabFadeInAnimationDelay
-        )
-    }
-    val chipTintColor by animateColorAsState(
-        targetValue = if (isSelected) chipColor else chipColor.copy(alpha = InactiveTabOpacity),
-        animationSpec = animSpec
-    )
-    val chipTextColor by animateColorAsState(
-        targetValue = if (isSelected) textColor else textColor.copy(alpha = InactiveTabOpacity),
-        animationSpec = animSpec
-    )
-    Surface(
-        modifier = Modifier.padding(end = 8.dp),
-        elevation = 8.dp,
-        shape = MaterialTheme.shapes.medium,
-        color = chipTintColor
-    ) {
-        Row(
-            modifier = Modifier
-                .selectable(
-                    selected = isSelected,
-                    role = Role.Tab,
-                    onClick = onSelected,
-                )
-                .clearAndSetSemantics { contentDescription = screen.route }
+    Tab(selected = isSelected, onClick = onSelected) {
+        Column(
+            modifier = Modifier.height(50.dp),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
                 text = screen.route.uppercase(Locale.getDefault()),
-                style = MaterialTheme.typography.body2,
-                color = chipTextColor,
+                style = MaterialTheme.typography.subtitle1,
                 modifier = Modifier.padding(8.dp)
             )
         }
@@ -219,7 +166,7 @@ fun VideoPlayer(url: String) {
     LaunchedEffect(player) {
         player.prepare()
         player.playWhenReady = playWhenReady
-        player.repeatMode = Player.REPEAT_MODE_ALL;
+        player.repeatMode = Player.REPEAT_MODE_ALL
     }
 
     // Disposable view that hosts the player
@@ -257,8 +204,111 @@ fun sendIntent(intent: Intent, context: Context) {
 }
 
 
+/**
+ * Builds a scrollable row of the chips for all screens
+ * @param allScreens the list of all Screens
+ * @param onChipSelected the callback that gets called when one of the chips is selected
+ * @param currentScreen remember the current Screen selected
+ * current scrollState is saved to viewModel and restored on configuration changes
+ */
+/*@Composable
+fun ScrollableTabRow(
+    viewModel: ResumeViewModel,
+    allScreens: List<Screens>,
+    onChipSelected: (Screens) -> Unit,
+    currentScreen: Screens
+) {
+    val scrollState = rememberScrollState()
+    val scope = rememberCoroutineScope()
+    Surface(
+        modifier = Modifier
+            .fillMaxWidth(),
+    ) {
+        Row(
+            modifier = Modifier
+                .selectableGroup()
+                .horizontalScroll(scrollState)
+                .fillMaxWidth()
+                .padding(start = 8.dp),
+        ) {
+            scope.launch { scrollState.scrollTo(viewModel.screenChipScrollableTabRowScrollPosition) }
+            allScreens.forEach { screen ->
+                ScrollableTab(
+                    screen = screen,
+                    onSelected = {
+                        onChipSelected(screen) // callBack that will get called on click
+                        viewModel.onChangeScreenChipScrollableTabRowScrollPosition(scrollState.value) // update the scrollValue in the viewModel
+                    },
+                    isSelected = currentScreen == screen,
+                )
+            }
+        }
+    }
+}*/
+
+
+
+/**
+ * Builds an chip for a Screen to be displayed in the TabRow
+ * @param screen: a Screen
+ * @param isSelected a Boolean describing is the chip is selected or not
+ * @param onSelected the callBack to be called when this chip is selected
+ * The chip and text change color when selected
+ * color change is animated
+ */
+@Composable
+fun ScrollableTabRowChip(
+    screen: Screens,
+    isSelected: Boolean = false,
+    onSelected: () -> Unit,
+) {
+
+    val chipColor = MaterialTheme.colors.onPrimary
+    val textColor = MaterialTheme.colors.primaryVariant
+    val durationMillis = if (isSelected) TabFadeInAnimationDuration else TabFadeOutAnimationDuration
+    val animSpec = remember {
+        tween<Color>(
+            durationMillis = durationMillis,
+            easing = LinearEasing,
+            delayMillis = TabFadeInAnimationDelay
+        )
+    }
+    val chipTintColor by animateColorAsState(
+        targetValue = if (isSelected) chipColor else chipColor.copy(alpha = InactiveTabOpacity),
+        animationSpec = animSpec
+    )
+    val chipTextColor by animateColorAsState(
+        targetValue = if (isSelected) textColor else textColor.copy(alpha = InactiveTabOpacity),
+        animationSpec = animSpec
+    )
+    Surface(
+        modifier = Modifier.padding(end = 8.dp),
+        elevation = 8.dp,
+        shape = MaterialTheme.shapes.medium,
+        color = chipTintColor
+    ) {
+        Row(
+            modifier = Modifier
+                .selectable(
+                    selected = isSelected,
+                    role = Role.Tab,
+                    onClick = onSelected,
+                )
+                .clearAndSetSemantics { contentDescription = screen.route }
+        ) {
+            Text(
+                text = screen.route.uppercase(Locale.getDefault()),
+                style = MaterialTheme.typography.body2,
+                color = chipTextColor,
+                modifier = Modifier.padding(8.dp)
+            )
+        }
+    }
+}
+
 private const val InactiveTabOpacity = 0.60f
 
 private const val TabFadeInAnimationDuration = 150
 private const val TabFadeInAnimationDelay = 100
 private const val TabFadeOutAnimationDuration = 100
+

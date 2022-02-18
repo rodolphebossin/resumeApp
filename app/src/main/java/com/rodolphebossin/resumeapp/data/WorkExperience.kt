@@ -37,7 +37,7 @@ object DataExperiences {
             listOf(R.drawable.logorip_black, R.drawable.logorip_white),
             "Costa Mesa, Californie, USA",
             listOf(
-                "Coordination, élaboration et optimisation de l’offre mondiale :\n" +
+                "Coordination, élaboration et optimisation de l’offre mondiale : " +
                         "4 millions de \$ de CA, +30% de croissance annuelle 2016-18.",
                 "Création des modèles, planification et suivi du développement.",
                 "Responsable prix, sourcing et veille technologique."

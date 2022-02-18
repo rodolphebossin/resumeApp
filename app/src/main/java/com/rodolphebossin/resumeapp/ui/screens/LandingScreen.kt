@@ -124,7 +124,7 @@ fun LandingScreenGradientBtn(
                 .padding(vertical = 12.dp),
         ) {
             Text(
-
+                color = MaterialTheme.colors.onPrimary.copy(alpha = 0.90f),
                 text = text.uppercase(Locale.getDefault()),
                 modifier = Modifier.align(Alignment.Center),
                 style = MaterialTheme.typography.h6
