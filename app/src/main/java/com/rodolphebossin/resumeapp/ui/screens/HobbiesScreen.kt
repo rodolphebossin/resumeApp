@@ -116,7 +116,7 @@ fun HobbyCardContent(hobby: Hobby, viewModel: ResumeViewModel) {
                     .fillMaxWidth(),
 
             ) {
-                VideoPlayer(hobby.videoUrl)
+                VideoPlayer(hobby.videoUrl, viewModel)
             }
 
         }

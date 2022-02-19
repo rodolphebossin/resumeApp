@@ -55,4 +55,11 @@ class ResumeViewModel : ViewModel() {
         clicked = modifiedList
     }
 
+    // Video playback position
+    var playbackPosition: Long = 0L
+
+   /* fun onPositionChanged(position: Long){
+        playbackPosition = position
+    }
+*/
 }

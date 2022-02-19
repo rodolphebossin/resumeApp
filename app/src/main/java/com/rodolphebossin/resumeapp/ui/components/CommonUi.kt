@@ -34,6 +34,7 @@ import com.google.android.exoplayer2.ui.PlayerView
 import com.rodolphebossin.resumeapp.R
 import com.rodolphebossin.resumeapp.ResumeViewModel
 import com.rodolphebossin.resumeapp.ui.Screens
+import kotlinx.coroutines.launch
 import java.util.*
 
 
@@ -148,24 +149,19 @@ fun ResumeTopAppBar(
  * player is automatically destroyed when UI is destroyed
  */
 @Composable
-fun VideoPlayer(url: String) {
+fun VideoPlayer(url: String, viewModel: ResumeViewModel) {
     val context = LocalContext.current
-    val player = remember {
-        ExoPlayer.Builder(context).build()
-    }
+    val player = remember { ExoPlayer.Builder(context).build() }
     val playerView = PlayerView(context)
     val mediaItem = MediaItem.fromUri(url)
-    val playWhenReady by rememberSaveable {
-        mutableStateOf(true)
-    }
+    var playbackPosition by rememberSaveable { mutableStateOf(0L)}
 
-    player.setMediaItem(mediaItem)
     playerView.player = player
     playerView.resizeMode = AspectRatioFrameLayout.RESIZE_MODE_ZOOM
-    // playerView.setKeepContentOnPlayerReset(true);
     LaunchedEffect(player) {
         player.prepare()
-        player.playWhenReady = playWhenReady
+        player.setMediaItem(mediaItem, playbackPosition)
+        player.playWhenReady = true
         player.repeatMode = Player.REPEAT_MODE_ALL
     }
 
@@ -173,12 +169,15 @@ fun VideoPlayer(url: String) {
     DisposableEffect(
         AndroidView(
             modifier = Modifier
-                .then(if (player.isPlaying) Modifier.height(250.dp) else Modifier), // adjust player size when video starts playing
+                .height(250.dp),
+                // .then(if (player.isPlaying) Modifier.height(250.dp) else Modifier), // adjust player size when video starts playing
             factory = {
                 playerView
             })
     ) {
         onDispose {
+            playbackPosition = player.currentPosition
+            // viewModel.onPositionChanged(playbackPosition)
             player.release() // Release player when view is destroyed
         }
     }
