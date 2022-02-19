@@ -16,6 +16,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
 import com.rodolphebossin.resumeapp.R
 import com.rodolphebossin.resumeapp.ResumeViewModel
@@ -36,7 +38,11 @@ fun HobbiesScreen(hobbies: List<Hobby>, viewModel: ResumeViewModel) {
     val state = rememberLazyListState()
     LazyColumn(
         state = state,
-        modifier = Modifier.padding(vertical = 8.dp),
+        modifier = Modifier
+            .padding(vertical = 8.dp)
+            .semantics {
+                contentDescription = "Hobbies Screen"
+            },
     ) { // LazyColumn takes a list(items) as parameter
         items(items = hobbies) { hobby -> // for each of the items
             HobbyCard(hobby = hobby, viewModel)
@@ -115,7 +121,7 @@ fun HobbyCardContent(hobby: Hobby, viewModel: ResumeViewModel) {
                 modifier = Modifier
                     .fillMaxWidth(),
 
-            ) {
+                ) {
                 VideoPlayer(hobby.videoUrl, viewModel)
             }
 

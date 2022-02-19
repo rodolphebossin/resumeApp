@@ -14,6 +14,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
@@ -74,46 +75,61 @@ fun ResumeApp(viewModel: ResumeViewModel) {
                 }
             }
         ) { innerPadding ->
-            NavHost( // NavHost will receive all screens/destinations
+            ResumeNavHost(
                 navController = navController,
-                startDestination = Screens.Home.route, // default destination
+                allScreens = allScreens,
+                viewModel = viewModel,
                 modifier = Modifier.padding(innerPadding)
-            ) { // List all possible destinations
-                composable(route = Screens.Home.route) {  // Overview destination route (default)
-                    LandingScreen(
-                        navController,
-                        allScreens,
-                        viewModel = viewModel
-                    ) // screen content
-                }
-                composable(route = Screens.Bio.route) {
-                    BioScreen(paragraphs = DataBio.bio)
-                }
-                composable(route = Screens.Forces.route) {
-                    ForcesScreen(paragraphs = DataForces.forces)
-                }
-                composable(route = Screens.Parcours.route) {
-                    WorkExperiencesScreen(
-                        experiences = DataExperiences.workExperiences,
-                        viewModel = viewModel
-                    )
-                }
-                composable(route = Screens.Competences.route) {
-                    CompetencesScreen(
-                        competences = DataCompetences.competences,
-                        viewModel = viewModel
-                    )
-                }
-                composable(route = Screens.Technos.route) {
-                    TechnosScreen(technosList = DataTechnos.technos)
-                }
-                composable(route = Screens.Formation.route) {
-                    FormationScreen(formations = DataFormation.formations)
-                }
-                composable(route = Screens.Loisirs.route) {
-                    HobbiesScreen(hobbies = DataHobbies.hobbies, viewModel = viewModel)
-                }
-            }
+            )
+        }
+    }
+}
+
+@Composable
+fun ResumeNavHost(
+    navController: NavHostController,
+    allScreens: List<Screens>,
+    viewModel: ResumeViewModel,
+    modifier: Modifier = Modifier
+){
+    NavHost( // NavHost will receive all screens/destinations
+        navController = navController,
+        startDestination = Screens.Home.route, // default destination
+        modifier = modifier
+    ) { // List all possible destinations
+        composable(route = Screens.Home.route) {  // Overview destination route (default)
+            LandingScreen(
+                navController,
+                allScreens,
+                viewModel = viewModel
+            ) // screen content
+        }
+        composable(route = Screens.Bio.route) {
+            BioScreen(paragraphs = DataBio.bio)
+        }
+        composable(route = Screens.Forces.route) {
+            ForcesScreen(paragraphs = DataForces.forces)
+        }
+        composable(route = Screens.Parcours.route) {
+            WorkExperiencesScreen(
+                experiences = DataExperiences.workExperiences,
+                viewModel = viewModel
+            )
+        }
+        composable(route = Screens.Competences.route) {
+            CompetencesScreen(
+                competences = DataCompetences.competences,
+                viewModel = viewModel
+            )
+        }
+        composable(route = Screens.Technos.route) {
+            TechnosScreen(technosList = DataTechnos.technos)
+        }
+        composable(route = Screens.Formation.route) {
+            FormationScreen(formations = DataFormation.formations)
+        }
+        composable(route = Screens.Loisirs.route) {
+            HobbiesScreen(hobbies = DataHobbies.hobbies, viewModel = viewModel)
         }
     }
 }
