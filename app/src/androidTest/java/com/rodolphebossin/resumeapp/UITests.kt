@@ -3,7 +3,11 @@ package com.rodolphebossin.resumeapp
 import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.navigation.NavHostController
+import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.rodolphebossin.resumeapp.ui.Screens
+import com.rodolphebossin.resumeapp.ui.components.ScrollableTabRow
+import com.rodolphebossin.resumeapp.ui.theme.ResumeAppTheme
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -22,23 +26,38 @@ class UITests {
         composeTestRule.setContent {
             val viewModel = ResumeViewModel()
             navController = rememberNavController()
-            ResumeNavHost(
-                navController = navController,
-                viewModel = viewModel,
-                allScreens = viewModel.allScreens,
+            val backstackEntry =
+                navController.currentBackStackEntryAsState() // provide with the current backStack entry as a State
+            val currentScreen = Screens.fromRoute( // Update current screen
+                backstackEntry.value?.destination?.route // query the current back stack entry for its route
             )
+            ResumeAppTheme {
+                ResumeNavHost(
+                    navController = navController,
+                    viewModel = viewModel,
+                    allScreens = viewModel.allScreens,
+                )
+                if (currentScreen != Screens.Home) {
+                    ScrollableTabRow( // TopBar with icons allowing navigation
+                        viewModel = viewModel,
+                        allScreens = viewModel.allScreens,
+                        onTabSelected = { screen -> navController.navigate(screen.route) }, // Navigates to selected screen
+                        currentScreen = currentScreen
+                    )
+                }
+            }
         }
     }
 
     @Test
-    fun resumeNavHost(){
+    fun resumeNavHost() {
         composeTestRule
             .onNode(hasText("Rodolphe Bossin"))
             .assertIsDisplayed()
     }
 
     @Test
-    fun resumeNavHost_NavigateToBio(){
+    fun resumeNavHost_NavigateToBio() {
         composeTestRule
             .onNode(hasText("BIO"))
             .performClick()
@@ -48,7 +67,7 @@ class UITests {
     }
 
     @Test
-    fun resumeNavHost_NavigateToHobbies(){
+    fun resumeNavHost_NavigateToHobbies() {
         composeTestRule.onNode(hasText("LOISIRS")).apply {
             performScrollTo()
             performClick()
@@ -57,5 +76,31 @@ class UITests {
             .onNodeWithContentDescription("Hobbies Screen")
             .assertIsDisplayed()
 
+    }
+
+    @Test
+    fun scrollableTabRowIsDisplayed() {
+        composeTestRule
+            .onNode(hasText("FORCES"))
+            .performClick()
+        composeTestRule
+            .onNodeWithContentDescription("ScrollableTabRow")
+            .assertIsDisplayed()
+
+    }
+
+    @Test
+    fun scrollableTabRowNotDisplayedOnHomeScreen() {
+        composeTestRule
+            .onNode(hasText("FORCES"))
+            .performClick()
+        composeTestRule
+            .onNode(hasText("HOME")).apply {
+                performScrollTo()
+                performClick()
+            }
+        composeTestRule
+            .onNodeWithContentDescription("ScrollableTabRow")
+            .assertDoesNotExist()
     }
 }

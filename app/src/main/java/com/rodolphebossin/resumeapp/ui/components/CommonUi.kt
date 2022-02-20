@@ -23,6 +23,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.content.ContextCompat
@@ -34,7 +35,6 @@ import com.google.android.exoplayer2.ui.PlayerView
 import com.rodolphebossin.resumeapp.R
 import com.rodolphebossin.resumeapp.ResumeViewModel
 import com.rodolphebossin.resumeapp.ui.Screens
-import kotlinx.coroutines.launch
 import java.util.*
 
 
@@ -74,7 +74,12 @@ fun ScrollableTabRow(
     currentScreen: Screens
 ) {
     var selectedScreen by rememberSaveable { mutableStateOf(allScreens.indexOf(currentScreen)) }
-    Surface(elevation = 8.dp) {
+    Surface(
+        elevation = 8.dp,
+        modifier = Modifier.semantics {
+            contentDescription = "ScrollableTabRow"
+        },
+    ) {
         ScrollableTabRow(
             selectedTabIndex = selectedScreen,
             divider = {}
@@ -154,7 +159,7 @@ fun VideoPlayer(url: String, viewModel: ResumeViewModel) {
     val player = remember { ExoPlayer.Builder(context).build() }
     val playerView = PlayerView(context)
     val mediaItem = MediaItem.fromUri(url)
-    var playbackPosition by rememberSaveable { mutableStateOf(0L)}
+    var playbackPosition by rememberSaveable { mutableStateOf(0L) }
 
     playerView.player = player
     playerView.resizeMode = AspectRatioFrameLayout.RESIZE_MODE_ZOOM
@@ -170,7 +175,7 @@ fun VideoPlayer(url: String, viewModel: ResumeViewModel) {
         AndroidView(
             modifier = Modifier
                 .height(250.dp),
-                // .then(if (player.isPlaying) Modifier.height(250.dp) else Modifier), // adjust player size when video starts playing
+            // .then(if (player.isPlaying) Modifier.height(250.dp) else Modifier), // adjust player size when video starts playing
             factory = {
                 playerView
             })

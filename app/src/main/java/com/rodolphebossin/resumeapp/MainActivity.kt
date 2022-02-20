@@ -63,7 +63,6 @@ fun ResumeApp(viewModel: ResumeViewModel) {
                         onMailClick = { sendIntent(emailIntent, context) },
                         onLinkedInClick = { sendIntent(linkedInIntent, context) }
                     )
-
                     if (currentScreen != Screens.Home) {
                         ScrollableTabRow( // TopBar with icons allowing navigation
                             viewModel = viewModel,
