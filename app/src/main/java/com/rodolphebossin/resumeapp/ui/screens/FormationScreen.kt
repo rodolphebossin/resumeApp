@@ -14,10 +14,8 @@ import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.FormatColorFill
 import androidx.compose.runtime.*
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
@@ -29,6 +27,7 @@ import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import com.rodolphebossin.resumeapp.ResumeViewModel
 import com.rodolphebossin.resumeapp.data.Formation
+import com.rodolphebossin.resumeapp.dp
 import kotlin.math.roundToInt
 
 /**
@@ -37,7 +36,7 @@ import kotlin.math.roundToInt
  */
 
 const val ACTION_ITEM_SIZE = 100
-const val CARD_OFFSET = 260f // we have 1 icon in the row, so that's 56
+const val CARD_OFFSET = 100f // we have 1 icon in the row, so that's 56
 
 const val ANIMATION_DURATION = 500
 
@@ -66,13 +65,13 @@ fun FormationsCardsScreen(viewModel: ResumeViewModel) {
                     actionIconSize = ACTION_ITEM_SIZE.dp,
                     onClick = { viewModel.onClickedChange(card.id) },
 
-                )
+                    )
                 DraggableCard(
                     // card to be swiped
                     card = card,
                     isRevealed = revealedCardIds.value.contains(card.id),
                     isColored = coloredCardIds.value.contains(card.id),
-                    cardOffset = CARD_OFFSET,
+                    cardOffset = CARD_OFFSET.dp(),
                     onExpand = { viewModel.onItemExpanded(card.id) },
                     onCollapse = { viewModel.onItemCollapsed(card.id) },
                 )
