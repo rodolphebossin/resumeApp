@@ -2,10 +2,12 @@ package com.rodolphebossin.resumeapp
 
 import android.content.Intent
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.MaterialTheme
@@ -84,6 +86,7 @@ fun ResumeApp(viewModel: ResumeViewModel) {
     }
 }
 
+@RequiresApi(Build.VERSION_CODES.N)
 @Composable
 fun ResumeNavHost(
     navController: NavHostController,
@@ -125,7 +128,7 @@ fun ResumeNavHost(
             TechnosScreen(technosList = DataTechnos.technos)
         }
         composable(route = Screens.Formation.route) {
-            FormationScreen(formations = DataFormation.formations)
+            FormationsCardsScreen(viewModel = viewModel)
         }
         composable(route = Screens.Loisirs.route) {
             HobbiesScreen(hobbies = DataHobbies.hobbies, viewModel = viewModel)
