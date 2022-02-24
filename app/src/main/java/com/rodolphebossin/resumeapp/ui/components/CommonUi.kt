@@ -86,12 +86,15 @@ fun ScrollableTabRow(
             divider = {}
         ) {
             allScreens.forEachIndexed { index, screen ->
+                var clicked by rememberSaveable { mutableStateOf(viewModel.clicked) }
                 ScrollableTab(
                     screen = screen,
                     onSelected = {
                         selectedScreen = index
                         viewModel.onScreenChange(selectedScreen)
                         onTabSelected(screen)
+                        if (!clicked[index]) clicked[index] = !clicked[index]
+                        viewModel.onClickedChange(clicked)
                     },
                     isSelected = currentScreen == screen
                 )

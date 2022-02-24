@@ -49,7 +49,7 @@ val fourthLine = with(AnnotatedString.Builder()) {
     append("Enthousiaste,\n")
     append("curieux,\n")
     append("fiable,\n")
-    append("polyvalent,\n")
+    append("polyvalent.")
     toAnnotatedString()
 }
 
