@@ -34,6 +34,7 @@ class MainActivity : ComponentActivity() {
     private val viewModel by viewModels<ResumeViewModel>()
 
 
+    @RequiresApi(Build.VERSION_CODES.N)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -46,6 +47,7 @@ class MainActivity : ComponentActivity() {
 }
 
 
+@RequiresApi(Build.VERSION_CODES.N)
 @Composable
 fun ResumeApp(viewModel: ResumeViewModel) {
     ResumeAppTheme {
@@ -100,7 +102,7 @@ fun ResumeNavHost(
         modifier = modifier
     ) { // List all possible destinations
         composable(route = Screens.Home.route) {  // Overview destination route (default)
-            LandingScreen(
+            HomeScreen(
                 navController,
                 allScreens,
                 viewModel = viewModel

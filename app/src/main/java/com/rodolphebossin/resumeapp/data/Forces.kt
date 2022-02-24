@@ -46,9 +46,10 @@ val thirdLine = with(AnnotatedString.Builder()) {
 }
 
 val fourthLine = with(AnnotatedString.Builder()) {
-    append("Autonome et fiable,\n")
-    append("Adaptable et réactif,\n")
-    append("Orienté résultats.")
+    append("Enthousiaste,\n")
+    append("curieux,\n")
+    append("fiable,\n")
+    append("polyvalent,\n")
     toAnnotatedString()
 }
 

@@ -26,9 +26,9 @@ object DataCompetences {
             "Savoir-Faire",
             Icons.Filled.Work,
             listOf(
-                "Coordonner un projet, fédérer et motiver une équipe autour d’un objectif.",
                 "Communiquer in situ ou à distance, animer des réunions en français et anglais.",
-                "Rechercher des fournisseurs : sourcing international, évaluation, audits.",
+                "Coordonner un projet, fédérer et motiver une équipe autour d’un objectif.",
+                "Rechercher des clients et fournisseurs : sourcing international, évaluation, audits.",
                 "Négocier des prix, délais, quantités et conditions commerciales."
             )
         ),

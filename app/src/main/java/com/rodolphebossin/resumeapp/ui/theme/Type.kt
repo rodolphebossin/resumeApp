@@ -1,10 +1,13 @@
 package com.rodolphebossin.resumeapp.ui.theme
 
 import androidx.compose.material.Typography
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
+import com.rodolphebossin.resumeapp.R
 
 // Set of Material typography styles to start with
 val Typography = Typography(
@@ -26,3 +29,16 @@ val Typography = Typography(
     )
     */
 )
+
+val Billabong = FontFamily(
+    Font(R.font.billabong)
+)
+
+val LeckerliOne = FontFamily(
+    Font(R.font.leckerlione_regular)
+)
+
+val DancingScript = FontFamily(
+    Font(R.font.dancingscript_variablefont_wght)
+)
+

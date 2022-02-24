@@ -6,10 +6,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.CutCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.Button
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Surface
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -17,16 +14,22 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.rodolphebossin.resumeapp.R
 import com.rodolphebossin.resumeapp.ResumeViewModel
 import com.rodolphebossin.resumeapp.ui.Screens
 import com.rodolphebossin.resumeapp.ui.components.AnimatedCircleOutline
+import com.rodolphebossin.resumeapp.ui.theme.Billabong
+import com.rodolphebossin.resumeapp.ui.theme.DancingScript
+import com.rodolphebossin.resumeapp.ui.theme.LeckerliOne
 import java.util.*
 
 /**
@@ -34,7 +37,7 @@ import java.util.*
  */
 
 @Composable
-fun LandingScreen(
+fun HomeScreen(
     navController: NavController,
     allScreens: List<Screens>,
     viewModel: ResumeViewModel
@@ -49,7 +52,7 @@ fun LandingScreen(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         // Box containing profile pic and animated border
-        Box(Modifier.padding(16.dp)) {
+        Box(Modifier.padding(top = 16.dp, bottom = 8.dp)) {
             // animated border
             AnimatedCircleOutline(
                 color = MaterialTheme.colors.primary,
@@ -75,13 +78,14 @@ fun LandingScreen(
         // Name
         Text(
             text = "Rodolphe Bossin",
-            style = MaterialTheme.typography.h4,
+            fontFamily = DancingScript,
+            style = MaterialTheme.typography.h3.copy(fontWeight = FontWeight.Bold),
             modifier = Modifier.padding(8.dp)
         )
         // Position
         Text(
             text = "Développeur Android".uppercase(Locale.getDefault()),
-            style = MaterialTheme.typography.subtitle1.copy(fontWeight = FontWeight.ExtraBold),
+            style = MaterialTheme.typography.subtitle2.copy(fontSize = 20.sp, fontWeight = FontWeight.Light),
             modifier = Modifier.padding(bottom = 16.dp)
         )
         // Creates Buttons for all screens except Home
@@ -94,7 +98,7 @@ fun LandingScreen(
 /**
  * Builds a full width Button
  * Remembers if button already clicked
- * Clicked Buttons show cut corner
+ * Clicked Buttons show cut corner and medium alpha
  */
 @Composable
 fun HomeScreenButton(
@@ -112,7 +116,8 @@ fun HomeScreenButton(
         },
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 16.dp, vertical = 8.dp),
+            .padding(horizontal = 16.dp, vertical = 8.dp)
+            .then(if (clicked[index]) Modifier.alpha(ContentAlpha.medium) else Modifier),
         shape = if (clicked[index]) CutCornerShape(topEnd = 20.dp) else MaterialTheme.shapes.medium,
     ) {
         Text(
@@ -123,94 +128,4 @@ fun HomeScreenButton(
     }
 }
 
-/**
- * Builds a full width button
- */
-/*@Composable
-fun LandingScreenGradientBtn(
-    onClick: () -> Unit,
-    text: String,
-) {
-    val gradient = Brush.horizontalGradient(
-        colors = listOf(
-            MaterialTheme.colors.primary,
-            MaterialTheme.colors.primaryVariant
-        )
-    )
-    Button( // Use Button to build our custom btn
-        colors = ButtonDefaults.buttonColors(
-            backgroundColor = Color.Transparent // suppress default background color
-        ),
-        contentPadding = PaddingValues(),
-        onClick = onClick,
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 16.dp, vertical = 8.dp),
-        elevation = ButtonDefaults.elevation()
-    ) {
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .background(gradient)
-                .padding(vertical = 12.dp),
-        ) {
-            Text(
-                color = MaterialTheme.colors.onPrimary.copy(alpha = 0.90f),
-                text = text.uppercase(Locale.getDefault()),
-                modifier = Modifier.align(Alignment.Center),
-                style = MaterialTheme.typography.h6
-            )
-            Text(
-                text = "•••",
-                color = MaterialTheme.colors.secondary,
-                modifier = Modifier
-                    .padding(end = 8.dp)
-                    .align(Alignment.CenterEnd),
-                style = MaterialTheme.typography.h6
-            )
-        }
-    }
-}*/
 
-/*@Composable
-fun LandingScreenButton(
-    onClick: () -> Unit = {},
-    text: String
-) {
-    TextButton(
-        colors = ButtonDefaults.buttonColors(
-            backgroundColor = MaterialTheme.colors.primary
-        ),
-        onClick = onClick,
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 16.dp, vertical = 8.dp),
-        elevation = ButtonDefaults.elevation()
-    ) {
-        Box(
-            modifier = Modifier
-                .padding(vertical = 4.dp)
-                .fillMaxWidth(),
-            ) {
-            Text(
-                text = text.uppercase(Locale.getDefault()),
-                modifier = Modifier.align(Alignment.Center),
-                style = MaterialTheme.typography.h6
-            )
-            Text(
-                text = "•••",
-                modifier = Modifier
-                    .padding(end = 8.dp)
-                    .align(Alignment.CenterEnd)
-            )
-        }
-
-    }
-}*/
-
-/*
-@Preview(showBackground = true)
-@Composable
-fun LandingScreenButtonPreview() {
-    LandingScreenButton(onClick = {}, text = "test")
-}*/

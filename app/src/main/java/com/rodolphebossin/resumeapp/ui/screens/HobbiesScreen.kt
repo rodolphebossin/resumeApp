@@ -14,11 +14,13 @@ import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Size
+import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.toSize
 import com.rodolphebossin.resumeapp.R
 import com.rodolphebossin.resumeapp.ResumeViewModel
 import com.rodolphebossin.resumeapp.data.Hobby
@@ -119,10 +121,9 @@ fun HobbyCardContent(hobby: Hobby, viewModel: ResumeViewModel) {
         if (expanded) { // only shows this if expanded
             Column(
                 modifier = Modifier
-                    .fillMaxWidth(),
-
+                    .fillMaxWidth()
                 ) {
-                VideoPlayer(hobby.videoUrl, viewModel)
+                VideoPlayer(hobby.videoUrl)
             }
 
         }

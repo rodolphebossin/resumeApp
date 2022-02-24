@@ -16,27 +16,27 @@ data class Hobby(
 object DataHobbies {
     val hobbies: List<Hobby> = listOf(
         Hobby(
-            "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4",
+            "https://www.youtube.com/watch?v=RaMj29X6z2o",
             R.drawable.running,
         ),
         Hobby(
-            "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4",
+            "https://www.youtube.com/watch?v=dY0wbG17bvI",
             R.drawable.surfing,
         ),
         Hobby(
-            "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4",
+            "https://www.youtube.com/watch?v=NRkWMbOeDmQ",
             R.drawable.swimming,
         ),
         Hobby(
-            "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4",
+            "https://www.youtube.com/watch?v=U7ozusp6_Ls",
             R.drawable.fishing,
         ),
         Hobby(
-            "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4",
+            "https://www.youtube.com/watch?v=AZ53E9Y-9Ys",
             R.drawable.musique,
         ),
         Hobby(
-            "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4",
+            "https://www.youtube.com/watch?v=iUKjuni-6l8",
             R.drawable.yoga
         ),
     )
